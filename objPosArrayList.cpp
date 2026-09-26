@@ -1,0 +1,93 @@
+#include "objPosArrayList.h"
+
+// Check lecture contents on general purpose array list construction,
+// and modify it to support objPos array list construction.
+
+objPosArrayList::objPosArrayList()
+{
+    arrayCapacity = ARRAY_MAX_CAP;
+    listSize = 0;
+    aList = new objPos[arrayCapacity];
+}
+
+objPosArrayList::~objPosArrayList()
+{
+    delete[] aList;
+}
+
+int objPosArrayList::getSize() const
+{
+    return listSize;
+}
+
+void objPosArrayList::insertHead(objPos thisPos)
+{
+    // error handling
+    if (listSize < arrayCapacity)
+    {
+        for (int i = listSize; i > 0; i--)
+        {
+            aList[i] = aList[i - 1];
+        }
+        aList[0] = thisPos;
+
+        listSize++;
+    }
+}
+
+void objPosArrayList::insertTail(objPos thisPos)
+{
+    if (listSize < arrayCapacity)
+    {
+        aList[listSize] = thisPos;
+        listSize += 1;
+    }
+}
+
+void objPosArrayList::removeHead()
+{
+    for (int i = 0; i < listSize - 1; i++)
+    {
+        aList[i] = aList[i + 1];
+    }
+    if (listSize > 0)
+    {
+        listSize--;
+    }
+}
+
+void objPosArrayList::removeTail()
+{
+    if (listSize > 0)
+    {
+        listSize -= 1;
+    }
+}
+
+objPos objPosArrayList::getHeadElement() const
+{
+    if (listSize > 0)
+        return aList[0];
+    return objPos(-1, -1, '\0'); // error object if empty
+}
+
+objPos objPosArrayList::getTailElement() const
+{
+    if (listSize > 0)
+        return aList[listSize - 1];
+    return objPos(-1, -1, '\0');
+}
+
+objPos objPosArrayList::getElement(int index) const
+{ // assume highest index if greater than number of items in list
+    if (index > listSize - 1)
+    {
+        index = listSize - 1;
+    }
+    // assume they want the first element if they have a negative index
+    if (index < 0)
+    {
+        index = 0;
+    }
+    return aList[index];
+}
